@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-
-const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, SocketIoModule.forRoot(config)],
+  declarations: [AppComponent, DashboardComponent, NotFoundComponent],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })
