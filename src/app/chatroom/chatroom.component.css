@@ -1,0 +1,13 @@
+.chat {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 0 solid var(--secondary-dark);
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px #bdbdbd;
+}
+
+.messages {
+  flex: 90;
+}

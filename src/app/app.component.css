@@ -4,3 +4,17 @@
   width: 95%;
   margin: auto;
 }
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1em;
+  border-bottom: 2px solid var(--secondary-dark);
+}
+
+.login {
+  margin-bottom: 0.5em;
+  padding-right: 0.5em;
+}

@@ -1,0 +1,16 @@
+.form {
+  display: flex;
+}
+
+input {
+  width: 100%;
+  border: 1px solid var(--secondary-dark);
+  border-radius: 0 0 0 10px;
+  padding-left: 1em;
+}
+
+button {
+  width: 10%;
+  min-width: 100px;
+  border-radius: 0 0 10px 0;
+}

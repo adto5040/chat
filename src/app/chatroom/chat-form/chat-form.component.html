@@ -1,20 +1,19 @@
-<div class="center dashboard">
-  <h2>Welcome!</h2>
-
+<div class="form">
   <input
-    (keydown.enter)="setName()"
+    (keydown.enter)="sendMessage()"
     id="name"
     type="text"
-    placeholder="Enter username"
+    placeholder="Enter message"
     [formControl]="name"
+    autofocus
   />
 
   <button
     class="button"
     type="button"
-    (click)="setName()"
+    (click)="sendMessage()"
     [disabled]="name.invalid"
   >
-    Enter chat
+    Send
   </button>
 </div>
