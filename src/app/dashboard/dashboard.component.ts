@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { LocalStorageService } from '../../shared/local-storage.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Router } from '@angular/router';
 
 @Component({

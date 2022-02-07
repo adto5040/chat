@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from './chat.service';
 
 @Component({
   selector: 'app-chatroom',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chatroom.component.css']
 })
 export class ChatroomComponent implements OnInit {
-  constructor() {}
+  constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {}
+
+  clearAllMessages() {
+    this.chatService.clearMessages();
+  }
 }

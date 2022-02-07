@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { map, scan } from 'rxjs/operators';
 import { Message } from './message.module';
-import { LocalStorageService } from '../../shared/local-storage.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Guid } from 'guid-typescript';
 import { merge } from 'rxjs';
 
@@ -61,5 +61,9 @@ export class ChatService {
 
   loadHistoryMessages() {
     this.socket.emit(ChatClientEvent.LoadAllMessages);
+  }
+
+  clearMessages() {
+    this.socket.emit(ChatClientEvent.RemoveAllMessages);
   }
 }

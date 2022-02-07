@@ -1,19 +1,16 @@
 <div class="form">
+  <!--  (keydown.enter)="sendMessage()"-->
   <input
-    (keydown.enter)="sendMessage()"
     id="name"
     type="text"
     placeholder="Enter message"
     [formControl]="name"
     autofocus
+    #inputField
   />
 
-  <button
-    class="button"
-    type="button"
-    (click)="sendMessage()"
-    [disabled]="name.invalid"
-  >
+  <!--  (click)="sendMessage()"-->
+  <button class="button" type="button" [disabled]="name.invalid" #button>
     Send
   </button>
 </div>

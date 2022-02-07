@@ -6,7 +6,7 @@ import {
   UrlTree
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LocalStorageService } from '../shared/local-storage.service';
+import { LocalStorageService } from '../shared/services/local-storage.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })

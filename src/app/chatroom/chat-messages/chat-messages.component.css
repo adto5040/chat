@@ -1,9 +1,12 @@
 .message-box {
   background: var(--background);
-  height: 100%;
+  height: 60vh;
   border: 1px solid var(--secondary-dark);
   border-radius: 10px 10px 0 0;
   padding: 1em;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .date {
