@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-chat-form',
@@ -9,14 +10,14 @@ import { FormControl, Validators } from '@angular/forms';
 export class ChatFormComponent implements OnInit {
   name = new FormControl('', Validators.required);
 
-  constructor() {}
+  constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {}
 
   sendMessage() {
     const msg = this.name.value.trim();
     if (msg) {
-      console.log(msg);
+      this.chatService.sendMessage(msg);
       this.name.reset();
     }
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-chat-messages',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-messages.component.css']
 })
 export class ChatMessagesComponent implements OnInit {
-  constructor() {}
+  constructor(public chatService: ChatService) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.chatService.loadHistoryMessages();
+  }
 }

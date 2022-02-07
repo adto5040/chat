@@ -6,8 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatFormComponent } from './chat-form/chat-form.component';
 import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ChatService } from './chat.service';
 
-const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
+const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
 
 const routes: Routes = [{ path: '', component: ChatroomComponent }];
 
@@ -18,6 +19,7 @@ const routes: Routes = [{ path: '', component: ChatroomComponent }];
     SocketIoModule.forRoot(config),
     RouterModule.forChild(routes),
     ReactiveFormsModule
-  ]
+  ],
+  providers: [ChatService]
 })
 export class ChatroomModule {}

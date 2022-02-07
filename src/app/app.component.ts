@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LocalStorageService } from '../shared/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,15 @@ import { LocalStorageService } from '../shared/local-storage.service';
 export class AppComponent {
   isLoggedIn$ = this.localStorageService.isLoggedIn$;
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(
+    private localStorageService: LocalStorageService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
   onLogout() {
     this.localStorageService.removeUser();
+    this.router.navigate(['/']);
   }
 }

@@ -66,6 +66,7 @@ p {
   color: black;
   border: 1px solid var(--secondary-dark);
   line-height: 2em;
+  padding: 2px 6px;
 }
 
 .button:hover {
@@ -91,4 +92,10 @@ a:hover {
 input {
   line-height: 2em;
   width: 40%;
+  padding: 1px 2px;
+}
+
+input:focus {
+  outline: none !important;
+  box-shadow: 0 0 10px var(--secondard-light);
 }
