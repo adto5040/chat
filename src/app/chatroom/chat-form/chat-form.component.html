@@ -1,5 +1,4 @@
 <div class="form">
-  <!--  (keydown.enter)="sendMessage()"-->
   <input
     id="name"
     type="text"
@@ -7,9 +6,9 @@
     [formControl]="name"
     autofocus
     #inputField
+    (dblclick)="resetMessages()"
   />
 
-  <!--  (click)="sendMessage()"-->
   <button class="button" type="button" [disabled]="name.invalid" #button>
     Send
   </button>

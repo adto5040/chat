@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ChatService } from '../chat.service';
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { filter, repeat, take } from 'rxjs/operators';
+import { fromEvent, merge, Subscription, timer } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-form',
@@ -18,34 +18,49 @@ import { filter, repeat, take } from 'rxjs/operators';
 export class ChatFormComponent implements OnInit, OnDestroy {
   @ViewChild('inputField', { static: true }) inputField?: ElementRef;
   @ViewChild('button', { static: true }) button?: ElementRef;
-  name = new FormControl('', Validators.required);
+  name = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
+  ]);
   private sub = new Subscription();
+  private counter = 1;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
     const button$ = fromEvent<void>(this.button?.nativeElement, 'click');
+
     const inputField$ = fromEvent<KeyboardEvent>(
       this.inputField?.nativeElement,
       'keydown'
     ).pipe(filter((key: KeyboardEvent) => key.key === 'Enter'));
 
-    // TODO: If three messages have been sent withinfive seconds, the transmission of further messages within this time window should be blocked.
     this.sub = merge(button$, inputField$)
-      .pipe(take(3), repeat())
-      .subscribe(() => this.sendMessage());
+      .pipe(
+        // scan(count => count + 1, 0),
+        filter(() => this.name.valid),
+        map(() => this.counter++),
+        filter(x => x <= 3),
+        tap(() => this.sendMessage()),
+        switchMap(() => timer(5000))
+      )
+      .subscribe(() => {
+        console.log('Timer finished!');
+        this.counter = 1;
+      });
   }
 
   sendMessage() {
-    if (!this.name.value) {
+    if (!this.name.valid) {
       return;
     }
 
-    const msg = this.name.value.trim();
-    if (msg) {
-      this.chatService.sendMessage(msg);
-      this.name.reset();
-    }
+    this.chatService.sendMessage(this.name.value.trim());
+    this.name.reset();
+  }
+
+  resetMessages() {
+    this.chatService.clearMessages();
   }
 
   ngOnDestroy() {
