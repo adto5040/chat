@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-chat-messages',
@@ -26,6 +26,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         caseSensitivity => (this.caseSensitivity = caseSensitivity)
       )
     );
+
+    // Refresh all 30s
+    this.sub.add(timer(30000, 30000).subscribe(() => {}));
   }
 
   distinctHighlight(text: string) {
