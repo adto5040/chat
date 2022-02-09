@@ -2,6 +2,8 @@
   <p *ngFor="let message of chatService.getMessages$ | async">
     <span class="date chat">[{{ message.writtenAt | date: 'HH:mm:ss' }}] </span>
     <span class="author chat">{{ message.writtenBy }}: </span>
-    <span class="text chat">{{ message.text }}</span>
+    <span class="text chat" [ngClass]="distinctHighlight(message.text)">{{
+      message.text
+    }}</span>
   </p>
 </div>

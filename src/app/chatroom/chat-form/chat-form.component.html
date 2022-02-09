@@ -7,12 +7,13 @@
     autofocus
     #inputField
     (dblclick)="resetMessages()"
+    (keyup)="onKeyPressEvent($event, 'input')"
   />
   <button
     id="case"
     class="button"
     [ngClass]="{ active: caseSensitive }"
-    (click)="caseSensitive = !caseSensitive"
+    (click)="triggerCase()"
     *ngIf="messagesExist"
   >
     Aa
@@ -24,6 +25,7 @@
     [formControl]="search"
     #searchField
     *ngIf="messagesExist"
+    (keyup)="onKeyPressEvent($event, 'search')"
   />
 
   <button class="button" type="button" [disabled]="input.invalid" #button>

@@ -10,6 +10,7 @@ import { ChatService } from '../chat.service';
 import { fromEvent, merge, Subscription, timer } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { Message } from '../message.module';
+import { transformToSmileys } from '../../../shared/transformToSmileys';
 
 @Component({
   selector: 'app-chat-form',
@@ -25,10 +26,7 @@ export class ChatFormComponent implements OnInit, OnDestroy {
     Validators.required,
     Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
   ]);
-  search = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
-  ]);
+  search = new FormControl('');
 
   caseSensitive = false;
   messagesExist = false;
@@ -56,7 +54,7 @@ export class ChatFormComponent implements OnInit, OnDestroy {
           switchMap(() => timer(5000))
         )
         .subscribe(() => {
-          console.log('Timer finished!');
+          // console.log('Timer finished!');
           this.counter = 1;
         })
     );
@@ -77,8 +75,28 @@ export class ChatFormComponent implements OnInit, OnDestroy {
     this.input.reset();
   }
 
+  setSearchString() {
+    this.chatService.setSearchString(this.search.value);
+  }
+
   resetMessages() {
     this.chatService.clearMessages();
+  }
+
+  onKeyPressEvent(event: KeyboardEvent, target: string) {
+    if (event.key === 'Enter') return;
+
+    if (target === 'input') {
+      this.input.setValue(transformToSmileys(this.input.value));
+    } else if (target === 'search') {
+      this.setSearchString();
+      this.search.setValue(transformToSmileys(this.search.value));
+    }
+  }
+
+  triggerCase() {
+    this.caseSensitive = !this.caseSensitive;
+    this.chatService.setCase(this.caseSensitive);
   }
 
   ngOnDestroy() {

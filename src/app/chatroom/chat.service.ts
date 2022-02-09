@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { map, scan } from 'rxjs/operators';
+import { distinctUntilChanged, map, scan } from 'rxjs/operators';
 import { Message } from './message.module';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Guid } from 'guid-typescript';
-import { merge } from 'rxjs';
+import { BehaviorSubject, merge } from 'rxjs';
 
 enum ChatClientEvent {
   LoadAllMessages = '[Chat:Client] Load messages from history',
@@ -20,6 +20,12 @@ export class ChatService {
     private socket: Socket,
     private localStorageService: LocalStorageService
   ) {}
+
+  private _searchString$$ = new BehaviorSubject<string>('');
+  private _caseSensitivity$$ = new BehaviorSubject<boolean>(false);
+
+  getSearchString$ = this._searchString$$.pipe(distinctUntilChanged());
+  getCaseSensitivity$ = this._caseSensitivity$$.asObservable();
 
   getHistoryMessages$ = this.socket.fromEvent<Message[]>(
     ChatClientEvent.ResponseAllMessagesLoaded
@@ -57,6 +63,14 @@ export class ChatService {
       };
       this.socket.emit(ChatClientEvent.PublishSingleMessage, message);
     }
+  }
+
+  setSearchString(text: string) {
+    this._searchString$$.next(text);
+  }
+
+  setCase(caseSensitive: boolean) {
+    this._caseSensitivity$$.next(caseSensitive);
   }
 
   loadHistoryMessages() {
