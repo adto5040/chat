@@ -14,3 +14,18 @@ button {
   min-width: 100px;
   border-radius: 0 0 10px 0;
 }
+
+#search {
+  border-radius: 0;
+}
+
+#case {
+  border-radius: 0;
+  width: 3em;
+  min-width: 3em;
+}
+
+.active {
+  background-color: var(--secondary-dark);
+  color: white;
+}

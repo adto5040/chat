@@ -9,6 +9,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ChatService } from '../chat.service';
 import { fromEvent, merge, Subscription, timer } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { Message } from '../message.module';
 
 @Component({
   selector: 'app-chat-form',
@@ -18,10 +19,19 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 export class ChatFormComponent implements OnInit, OnDestroy {
   @ViewChild('inputField', { static: true }) inputField?: ElementRef;
   @ViewChild('button', { static: true }) button?: ElementRef;
-  name = new FormControl('', [
+  @ViewChild('searchField', { static: true }) searchField?: ElementRef;
+
+  input = new FormControl('', [
     Validators.required,
     Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
   ]);
+  search = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
+  ]);
+
+  caseSensitive = false;
+  messagesExist = false;
   private sub = new Subscription();
   private counter = 1;
 
@@ -35,28 +45,36 @@ export class ChatFormComponent implements OnInit, OnDestroy {
       'keydown'
     ).pipe(filter((key: KeyboardEvent) => key.key === 'Enter'));
 
-    this.sub = merge(button$, inputField$)
-      .pipe(
-        // scan(count => count + 1, 0),
-        filter(() => this.name.valid),
-        map(() => this.counter++),
-        filter(x => x <= 3),
-        tap(() => this.sendMessage()),
-        switchMap(() => timer(5000))
-      )
-      .subscribe(() => {
-        console.log('Timer finished!');
-        this.counter = 1;
-      });
+    this.sub.add(
+      merge(button$, inputField$)
+        .pipe(
+          // scan(count => count + 1, 0),
+          filter(() => this.input.valid),
+          map(() => this.counter++),
+          filter(x => x <= 3),
+          tap(() => this.sendMessage()),
+          switchMap(() => timer(5000))
+        )
+        .subscribe(() => {
+          console.log('Timer finished!');
+          this.counter = 1;
+        })
+    );
+
+    this.sub.add(
+      this.chatService.getMessages$.subscribe((messages: Message[]) => {
+        this.messagesExist = messages.length > 0;
+      })
+    );
   }
 
   sendMessage() {
-    if (!this.name.valid) {
+    if (!this.input.valid) {
       return;
     }
 
-    this.chatService.sendMessage(this.name.value.trim());
-    this.name.reset();
+    this.chatService.sendMessage(this.input.value.trim());
+    this.input.reset();
   }
 
   resetMessages() {

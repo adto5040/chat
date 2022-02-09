@@ -1,7 +1,7 @@
 <div class="message-box">
   <p *ngFor="let message of chatService.getMessages$ | async">
-    <span class="date">[{{ message.writtenAt | date: 'HH:mm:ss' }}] </span>
-    <span class="author">{{ message.writtenBy }}: </span>
-    <span class="text">{{ message.text }}</span>
+    <span class="date chat">[{{ message.writtenAt | date: 'HH:mm:ss' }}] </span>
+    <span class="author chat">{{ message.writtenBy }}: </span>
+    <span class="text chat">{{ message.text }}</span>
   </p>
 </div>

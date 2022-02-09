@@ -3,13 +3,30 @@
     id="name"
     type="text"
     placeholder="Enter message"
-    [formControl]="name"
+    [formControl]="input"
     autofocus
     #inputField
     (dblclick)="resetMessages()"
   />
+  <button
+    id="case"
+    class="button"
+    [ngClass]="{ active: caseSensitive }"
+    (click)="caseSensitive = !caseSensitive"
+    *ngIf="messagesExist"
+  >
+    Aa
+  </button>
+  <input
+    id="search"
+    type="text"
+    placeholder="Search"
+    [formControl]="search"
+    #searchField
+    *ngIf="messagesExist"
+  />
 
-  <button class="button" type="button" [disabled]="name.invalid" #button>
+  <button class="button" type="button" [disabled]="input.invalid" #button>
     Send
   </button>
 </div>
