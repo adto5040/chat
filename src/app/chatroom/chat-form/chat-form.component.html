@@ -28,7 +28,13 @@
     (keyup)="onKeyPressEvent($event, 'search')"
   />
 
-  <button class="button" type="button" [disabled]="input.invalid" #button>
+  <button
+    id="send-msg"
+    class="button"
+    type="button"
+    [disabled]="input.invalid"
+    #button
+  >
     Send
   </button>
 </div>

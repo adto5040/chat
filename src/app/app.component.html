@@ -2,7 +2,7 @@
   <div class="header serif">
     <h1>Chat</h1>
     <div class="login" *ngIf="isLoggedIn$ | async as username">
-      <a (click)="onLogout()">Logout</a> ({{ username }})
+      <a id="logout" (click)="onLogout()">Logout</a> ({{ username }})
     </div>
   </div>
   <router-outlet></router-outlet>
