@@ -6,7 +6,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ChatService } from '../chat.service';
+import { ChatService } from '../services/chat.service';
 import { fromEvent, merge, Subscription, timer } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { Message } from '../message.module';

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { distinctUntilChanged, map, scan } from 'rxjs/operators';
-import { Message } from './message.module';
-import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { Message } from '../message.module';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { Guid } from 'guid-typescript';
 import { BehaviorSubject, merge } from 'rxjs';
+import { BadWordsFilterPipe } from '../pipes/bad-words-filter.pipe';
+import { UserHighlightPipe } from '../pipes/user-highlight.pipe';
 
 enum ChatClientEvent {
   LoadAllMessages = '[Chat:Client] Load messages from history',
@@ -56,12 +58,37 @@ export class ChatService {
     const user = this.localStorageService.getUser();
     if (user) {
       const message: Message = {
-        guid: Guid.raw(),
         text: text,
         writtenAt: new Date(),
-        writtenBy: user
+        writtenBy: user,
+        guid: Guid.raw()
       };
       this.socket.emit(ChatClientEvent.PublishSingleMessage, message);
+      this.botAnalyseMessage(message);
+    }
+  }
+
+  botAnalyseMessage(message: Message) {
+    const badWordsFilter = new BadWordsFilterPipe();
+    let filteredMessage = badWordsFilter.transform(message.text);
+    if (message.text !== filteredMessage) {
+      this.socket.emit(ChatClientEvent.PublishSingleMessage, {
+        text: `@${message.writtenBy} please tame your tongue!`,
+        writtenAt: new Date(),
+        writtenBy: 'Chatbot',
+        guid: Guid.raw()
+      });
+    }
+
+    const userHighlight = new UserHighlightPipe();
+    filteredMessage = userHighlight.transform(message.text);
+    if (message.text !== filteredMessage) {
+      this.socket.emit(ChatClientEvent.PublishSingleMessage, {
+        text: `A chat partner has been mentioned!`,
+        writtenAt: new Date(),
+        writtenBy: 'Chatbot',
+        guid: Guid.raw()
+      });
     }
   }
 

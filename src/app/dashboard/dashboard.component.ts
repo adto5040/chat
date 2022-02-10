@@ -9,7 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  name = new FormControl('', Validators.required);
+  name = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
+  ]);
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -21,8 +24,8 @@ export class DashboardComponent implements OnInit {
   }
 
   setName() {
-    if (this.name.value) {
-      this.localStorageService.setUsername(this.name.value);
+    if (this.name.valid && this.name.value.trim().toLowerCase() !== 'chatbot') {
+      this.localStorageService.setUsername(this.name.value.trim());
       this.name.reset();
       this.checkUser();
     }

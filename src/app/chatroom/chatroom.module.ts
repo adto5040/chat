@@ -6,10 +6,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatFormComponent } from './chat-form/chat-form.component';
 import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChatService } from './chat.service';
 import { UserHighlightPipe } from './pipes/user-highlight.pipe';
 import { DateFormatterPipe } from './pipes/date-formatter.pipe';
 import { BadWordsFilterPipe } from './pipes/bad-words-filter.pipe';
+import { ChatService } from './services/chat.service';
 
 const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
 

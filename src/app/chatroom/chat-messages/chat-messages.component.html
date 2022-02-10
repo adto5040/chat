@@ -5,6 +5,9 @@
     <span
       class="text"
       [ngClass]="distinctHighlight(message.text)"
+      [ngStyle]="{
+        'font-style': message.writtenBy === 'Chatbot' ? 'italic' : 'inherit'
+      }"
       [innerHTML]="message.text | userHighlight | badWordsFilter"
     ></span>
   </p>
