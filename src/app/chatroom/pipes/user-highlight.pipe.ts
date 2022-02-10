@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class UserHighlightPipe implements PipeTransform {
   transform(text: string): string {
-    return text;
+    const regex = new RegExp('(^|\\s)@[a-zA-Z]+', 'g');
+    return text.replace(regex, '<b>$&</b>');
   }
 }

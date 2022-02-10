@@ -6,7 +6,7 @@ const EMOJIS = {
   '(y)': '👍'
 };
 
-export function transformToSmileys(text: string) {
+export function transformToEmojis(text: string) {
   let newText = text;
   for (const [emojiStr, emoji] of Object.entries(EMOJIS)) {
     const emojiStrEscaped = emojiStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');

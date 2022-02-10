@@ -2,6 +2,11 @@
   display: flex;
 }
 
+input,
+button {
+  font-family: inherit;
+}
+
 input {
   width: 100%;
   border: 1px solid var(--secondary-dark);

@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ChatService } from './chat.service';
 import { UserHighlightPipe } from './pipes/user-highlight.pipe';
 import { DateFormatterPipe } from './pipes/date-formatter.pipe';
+import { BadWordsFilterPipe } from './pipes/bad-words-filter.pipe';
 
 const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
 
@@ -20,7 +21,8 @@ const routes: Routes = [{ path: '', component: ChatroomComponent }];
     ChatFormComponent,
     ChatMessagesComponent,
     DateFormatterPipe,
-    UserHighlightPipe
+    UserHighlightPipe,
+    BadWordsFilterPipe
   ],
   imports: [
     CommonModule,

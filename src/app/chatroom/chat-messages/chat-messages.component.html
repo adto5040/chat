@@ -1,9 +1,11 @@
 <div class="message-box">
   <p *ngFor="let message of chatService.getMessages$ | async">
-    <span class="date chat">{{ message.writtenAt | dateFormatter }} </span>
-    <span class="author chat">{{ message.writtenBy }}: </span>
-    <span class="text chat" [ngClass]="distinctHighlight(message.text)">{{
-      message.text | userHighlight
-    }}</span>
+    <span class="date ">{{ message.writtenAt | dateFormatter }} </span>
+    <span class="author">{{ message.writtenBy }}: </span>
+    <span
+      class="text"
+      [ngClass]="distinctHighlight(message.text)"
+      [innerHTML]="message.text | userHighlight | badWordsFilter"
+    ></span>
   </p>
 </div>

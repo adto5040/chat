@@ -10,7 +10,7 @@ import { ChatService } from '../chat.service';
 import { fromEvent, merge, Subscription, timer } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { Message } from '../message.module';
-import { transformToSmileys } from '../../../shared/transformToSmileys';
+import { transformToEmojis } from '../../../shared/transformToEmojis';
 
 @Component({
   selector: 'app-chat-form',
@@ -87,10 +87,10 @@ export class ChatFormComponent implements OnInit, OnDestroy {
     if (event.key === 'Enter') return;
 
     if (target === 'input') {
-      this.input.setValue(transformToSmileys(this.input.value));
+      this.input.setValue(transformToEmojis(this.input.value));
     } else if (target === 'search') {
       this.setSearchString();
-      this.search.setValue(transformToSmileys(this.search.value));
+      this.search.setValue(transformToEmojis(this.search.value));
     }
   }
 
