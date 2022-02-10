@@ -13,4 +13,12 @@ describe('LocalStorageService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should be possible to get, store and remove a user', () => {
+    expect(service.getUser()).toBe(null);
+    service.setUsername('Adrian');
+    expect(service.getUser()).toBe('Adrian');
+    service.removeUser();
+    expect(service.getUser()).toBe(null);
+  });
 });
