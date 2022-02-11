@@ -8,7 +8,13 @@ import {
 import { FormControl, Validators } from '@angular/forms';
 import { ChatService } from '../services/chat.service';
 import { fromEvent, merge, Subscription, timer } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import {
+  exhaustMap,
+  filter,
+  mapTo,
+  scan,
+  withLatestFrom
+} from 'rxjs/operators';
 import { Message } from '../message.module';
 import { transformToEmojis } from '../../../shared/transformToEmojis';
 
@@ -31,7 +37,6 @@ export class ChatFormComponent implements OnInit, OnDestroy {
   caseSensitive = false;
   messagesExist = false;
   private sub = new Subscription();
-  private counter = 1;
 
   constructor(private chatService: ChatService) {}
 
@@ -43,19 +48,30 @@ export class ChatFormComponent implements OnInit, OnDestroy {
       'keydown'
     ).pipe(filter((key: KeyboardEvent) => key.key === 'Enter'));
 
+    const sendMessage$ = merge(button$, inputField$).pipe(
+      filter(() => this.input.valid),
+      mapTo('send')
+    );
+
+    const resetCounter$ = sendMessage$.pipe(
+      exhaustMap(() => timer(5000)),
+      mapTo('reset')
+    );
+
+    const counter$ = merge(sendMessage$, resetCounter$).pipe(
+      scan((acc, value) => {
+        return value === 'send' ? acc + 1 : 0;
+      }, 0)
+    );
+
     this.sub.add(
-      merge(button$, inputField$)
+      sendMessage$
         .pipe(
-          // scan(count => count + 1, 0),
-          filter(() => this.input.valid),
-          map(() => this.counter++),
-          filter(x => x <= 3),
-          tap(() => this.sendMessage()),
-          switchMap(() => timer(5000))
+          withLatestFrom(counter$),
+          filter(([, x]) => x <= 3)
         )
         .subscribe(() => {
-          // console.log('Timer finished!');
-          this.counter = 1;
+          this.sendMessage();
         })
     );
 
